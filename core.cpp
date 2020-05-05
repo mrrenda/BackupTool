@@ -9,6 +9,7 @@ Core::Core(QObject *parent) : QObject(parent) {
 
 int  Core::countFilesInDir(QString srcDir) {
     static int count = 0;
+    qDebug() << srcDir;
 
     QDir dir(srcDir);
     if (!dir.exists()) {
@@ -67,6 +68,7 @@ void Core::start() {
     emit started();
 
     m_fileCount = countFilesInDir(src1);
+    qDebug() << m_fileCount;
 
     if(m_fileCount) {
         QFuture<void> f = QtConcurrent::run(this, &Core::copyPath, src1, dst1);
