@@ -16,8 +16,8 @@ class Core : public QObject
 public:
     explicit Core(QObject *parent = nullptr);
 
-    QString src1 = "G:/Phone Backup";
-    QString dst1 = "D:/Desktop/Phone Backup";
+    QString src1 = "C:/Users";
+    QString dst1 = "D:/Desktop/Backup";
 
     int getValue();
     void setValue(int data);
