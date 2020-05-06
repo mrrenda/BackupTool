@@ -7,6 +7,7 @@ import com.renda.core 1.0
 ApplicationWindow {
     property var state: 0
     property var progressText: "Ready"
+    flags: Qt.FramelessWindowHint
 
     Material.theme: Material.Dark
     Material.accent: Material.Purple
@@ -16,7 +17,7 @@ ApplicationWindow {
     width: 500
     height: 200
 
-    title: qsTr("core Tool")
+    title: qsTr("Baclup Tool")
 
     Component.onCompleted: {
         progressBar.value = core.workload
@@ -46,51 +47,74 @@ ApplicationWindow {
         }
     }
 
+    Label {
+        id: lblStatus
+        text: "Status"
+        color: "gray"
+        x: 10
+        y: parent.height - 45
+    }
 
-    Column {
-        id: column
-        width: 434
-        height: 62
+    Label {
+        id: lblTitle
+        text: "Backup Tool"
+        color: "gray"
+        x: 10
+        y: 10
+    }
+
+    ProgressBar {
+        y: parent.height - 20
+        id: progressBar
+        width: parent.width
+        anchors.horizontalCenter: parent.horizontalCenter
+        value: 0.5
+    }
+
+
+    Button {
+        id: button
+        text: "Start"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 10
+        Material.accent: Material.Orange
 
-        Label {
-            id: lblStatus
-            text: "Status"
-        }
-
-        ProgressBar {
-            id: progressBar
-            width: parent.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            value: 0.5
-        }
-
-
-        Button {
-            id: button
-            text: "Start"
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter + 50
-            Material.accent: Material.Orange
-
-            onClicked: {
-                if (state == 0) {
-                    state = 1
-                    this.text = qsTr("Pause")
-                    core.start()
-                } else if (state == 1) {
-                    state = 2
-                    this.text = qsTr("Resume")
-                    core.pause()
-                } else if (state == 2) {
-                    state = 1
-                    this.text = qsTr("Pause")
-                    core.resume()
-                }
-                console.log(state)
+        onClicked: {
+            if (state == 0) {
+                state = 1
+                this.text = qsTr("Pause")
+                core.start()
+            } else if (state == 1) {
+                state = 2
+                this.text = qsTr("Resume")
+                core.pause()
+            } else if (state == 2) {
+                state = 1
+                this.text = qsTr("Pause")
+                core.resume()
             }
+            console.log(state)
         }
+    }
+
+    Rectangle {
+        id: quitButton
+        color: "red"
+        opacity: 0.5
+        width: 10
+        height: 10
+        radius: this.width
+        x: parent.width - (this.width + 10)
+        y: 10
+
+        MouseArea {
+            hoverEnabled: true
+            anchors.fill: parent
+
+            onEntered: parent.opacity = 1
+            onExited: parent.opacity = 0.5
+            onClicked: Qt.quit()
+        }
+
     }
 }
