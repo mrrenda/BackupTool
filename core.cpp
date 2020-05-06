@@ -5,11 +5,11 @@ Core::Core(QObject *parent) : QObject(parent) {
     m_fileCount = 0;
     m_filesTransferedCount = 0;
     m_stillRunning = true;
+    m_quitCommandExecuted = false;
 }
 
 int  Core::countFilesInDir(QString srcDir) {
     static int count = 0;
-    qDebug() << srcDir;
 
     QDir dir(srcDir);
     if (!dir.exists()) {
@@ -31,15 +31,19 @@ int  Core::countFilesInDir(QString srcDir) {
 void Core::copyPath(QString src, QString dst) {
     QDir dir(src);
 
-    foreach (QString d, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {  // | QDir::NoSymLinks
+    foreach (QString d, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks)) {
         QString dst_path = dst + QDir::separator() + d;
         dir.mkpath(dst_path);
         copyPath(src + QDir::separator() + d, dst_path);
     }
 
     foreach (QString f, dir.entryList(QDir::Files)) {
-        while(!m_stillRunning) {
+        while(!m_stillRunning && !m_quitCommandExecuted) {
             QThread::msleep(500);
+        }
+
+        if (m_quitCommandExecuted) {
+            return;
         }
 
         bool errCheck = QFile::copy(src + QDir::separator() + f, dst + QDir::separator() + f);
@@ -71,11 +75,12 @@ void Core::start() {
     qDebug() << m_fileCount;
 
     if(m_fileCount) {
-        QFuture<void> f = QtConcurrent::run(this, &Core::copyPath, src1, dst1);
+        QtConcurrent::run(this, &Core::copyPath, src1, dst1);
     }
 }
 
 void Core::stop() {
+    m_quitCommandExecuted = true;
     emit stopped();
 }
 

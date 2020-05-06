@@ -40,6 +40,7 @@ private:
     int m_fileCount;
     int m_filesTransferedCount;
     bool m_stillRunning;
+    bool m_quitCommandExecuted;
 
     void copyPath(QString src, QString dst);
     int  countFilesInDir(QString srcDir);
