@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
 
+
 import com.renda.core 1.0
 
 ApplicationWindow {
@@ -17,7 +18,8 @@ ApplicationWindow {
     id: window
     visible: true
     width: 300
-    height: 200
+    height: 400
+    color: "#000000"
 
     screen: Qt.application.screens[0]
     x: screen.width - this.width
@@ -46,8 +48,7 @@ ApplicationWindow {
         onResumed:  { progressText = "Backing up.. " }
         onProgress: {
             lblStatus.text = progressText + core.workload + "%"
-            circleProgress.angleDegree = core.workload * 360 / 100
-            circleProgress.requestPaint()
+            coloredRing.circleProgressAngleDegree = core.workload * 360 / 100
         }
     }
 
@@ -59,74 +60,10 @@ ApplicationWindow {
         y: 10
     }
 
-    Canvas {
-        property int radius: 65
-        property int angleDegree: 0
-
-        Behavior on angleDegree { SmoothedAnimation { velocity: 50 } }
-
-        id: circleProgress
-        anchors.fill: parent
-        antialiasing: true
-        onPaint: {
-            var ctx = getContext("2d");
-            ctx.reset();
-
-            var centreX = width / 2;
-            var centreY = height / 2 + 10;
-
-            ctx.beginPath();
-            ctx.fillStyle = "lightblue";
-            ctx.moveTo(centreX, centreY);
-            ctx.arc(centreX,
-                    centreY,
-                    radius, - Math.PI / 2,
-                    Math.PI * ((angleDegree / 180) - 0.5),
-                    false);
-            ctx.lineTo(centreX, centreY);
-            ctx.fill();
-        }
-    }
-
-    Rectangle {
-        id: button
-        anchors.horizontalCenter: parent.horizontalCenter
-        y: 50
-        width: 120
-        height: 120
-        radius: width
-        color: "#9C27B0"
-
-        MouseArea {
-            hoverEnabled: true
-            anchors.fill: parent
-            onEntered: button.color = "#ce6ddf"
-            onExited: button.color = "#9C27B0"
-
-            onClicked: {
-                if (state == 0) {
-                    state = 1
-                    buttonLbl.text = qsTr("Pause")
-                    core.start()
-                } else if (state == 1) {
-                    state = 2
-                    buttonLbl.text = qsTr("Resume")
-                    core.pause()
-                } else if (state == 2) {
-                    state = 1
-                    buttonLbl.text = qsTr("Pause")
-                    core.resume()
-                }
-                console.log(state)
-            }
-        }
-
-        Label {
-            id: buttonLbl
-            text: qsTr("Start")
-            color: "black"
-            anchors.centerIn: parent
-        }
+    ColoredRingButton {
+        id: coloredRing
+        anchors.centerIn: parent
+        ringSize: 120
     }
 
     TitleBarButton {
