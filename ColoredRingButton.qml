@@ -17,7 +17,7 @@ Item {
         spread: 0.9
         color: "#5555ff"
         cornerRadius: circleHolder.radius + glowRadius
-        onColorChanged: circleProgress.requestPaint()
+//        onColorChanged: circleProgress.requestPaint()
 
         SequentialAnimation {
             id: anim

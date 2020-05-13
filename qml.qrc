@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>TitleBarButton.qml</file>
         <file>ColoredRingButton.qml</file>
+        <file>img/settings.png</file>
     </qresource>
 </RCC>

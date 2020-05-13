@@ -1,8 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
-
-
 import com.renda.core 1.0
 
 ApplicationWindow {
@@ -37,6 +35,34 @@ ApplicationWindow {
             var delta = Qt.point(mouse.x-clickPos.x, mouse.y-clickPos.y)
             window.x += delta.x;
             window.y += delta.y;
+        }
+    }
+
+
+    Image {
+        id: imageSettings
+        x: 265
+        y: 365
+        width: 25
+        height: 25
+        fillMode: Image.PreserveAspectFit
+        source: "img/settings.png"
+
+        MouseArea {
+            anchors.fill: parent
+            onPressed: {
+                popupSettings.open()
+            }
+        }
+
+        Popup {
+            id: popupSettings
+            anchors.centerIn: parent
+            width: 200
+            height: 300
+            modal: true
+            focus: true
+            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         }
     }
 
@@ -80,15 +106,15 @@ ApplicationWindow {
         y: 10
         buttonColor: "blue"
         func.onPressed: { popup.open() }
-    }
 
-    Popup {
-        id: popup
-        anchors.centerIn: parent
-        width: 200
-        height: 300
-        modal: true
-        focus: true
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    }
+        Popup {
+            id: popup
+            anchors.centerIn: parent
+            width: 200
+            height: 300
+            modal: true
+            focus: true
+            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+        }
+    }    
 }
