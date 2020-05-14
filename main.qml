@@ -38,7 +38,6 @@ ApplicationWindow {
         }
     }
 
-
     Image {
         id: imageSettings
         x: 265
@@ -110,11 +109,56 @@ ApplicationWindow {
         Popup {
             id: popup
             anchors.centerIn: parent
-            width: 200
+            width: 300
             height: 300
             modal: true
             focus: true
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+
+            Row {
+                spacing: 20
+
+                Label{
+                    text: "Theme"
+                    color: "gray"
+                    x: 10
+                    y: 10
+                }
+
+                ComboBox {
+                    id: themeSelector
+//                    x: 25
+//                    y: 69
+                    width: 80
+                    height: 40
+                    font.weight: Font.Light
+                    font.pixelSize: 8
+                    rightPadding: 0
+                    font.family: "Arial"
+                    flat: false
+                    textRole: ""
+                    currentIndex: 0
+                    editable: false
+                    model: [ "Dark", "Light" ]
+
+                    onCurrentIndexChanged: {
+                        if(currentIndex === 0) {
+                            window.color = "#000000"
+                        } else {
+                            window.color = "#FAFAFA"
+                            coloredRing.buttonColor = "#FAFAFA"
+                        }
+                    }
+                }
+            }
         }
-    }    
+    }
 }
+
+
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:1.5}
+}
+##^##*/

@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.0
 Item {
     property int ringSize: 120
     property int circleProgressAngleDegree: 0
+    property alias buttonColor: button.color
 
     onCircleProgressAngleDegreeChanged: circleProgress.requestPaint()
 
@@ -155,3 +156,9 @@ Item {
         }
     }
 }
+
+/*##^##
+Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+##^##*/
